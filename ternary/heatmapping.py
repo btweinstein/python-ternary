@@ -7,6 +7,7 @@ import numpy
 from helpers import SQRT3, SQRT3OVER2, unzip, normalize, simplex_iterator
 import plotting
 from colormapping import get_cmap, colormapper, colorbar_hack
+import matplotlib.pyplot as pyplot
 
 ### Heatmap Triangulation Coordinates ###
 
