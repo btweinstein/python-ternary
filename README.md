@@ -10,14 +10,14 @@ Most ternary functions expect the simplex to be partititioned into some number o
 # Gallery
 
 <div style="text-align:center">
-<img src ="/../images/readme_images/various_lines.png" width="150" height="150"/>
-<img src ="/../images/readme_images/colored_trajectory.png" width="150" height="150"/>
-<img src ="/../images/readme_images/scatter.png" width="150" height="150"/>
-<img src ="/../images/readme_images/heatmap_rsp.png" width="150" height="150"/>
-<img src ="/../images/readme_images/16_80_1.png" width="150" height="150"/>
-<img src ="/../images/readme_images/16_80_stationary.png" width="150" height="150"/>
-<img src ="/../images/readme_images/23_80_0.png" width="150" height="150"/>
-<img src ="/../images/readme_images/24_80_1.png" width="150" height="150"/>
+<img src ="/readme_images/various_lines.png" width="150" height="150"/>
+<img src ="/readme_images/colored_trajectory.png" width="150" height="150"/>
+<img src ="/readme_images/scatter.png" width="150" height="150"/>
+<img src ="/readme_images/heatmap_rsp.png" width="150" height="150"/>
+<img src ="/readme_images/16_80_1.png" width="150" height="150"/>
+<img src ="/readme_images/16_80_stationary.png" width="150" height="150"/>
+<img src ="/readme_images/23_80_0.png" width="150" height="150"/>
+<img src ="/readme_images/24_80_1.png" width="150" height="150"/>
 </div>
 
 # Installation
@@ -50,7 +50,9 @@ tax.scatter(points, marker='s', color='red', label="Red Squares")
 tax.legend()
 ```
 
-Most drawing functions can take standard matplotlib keyword arguments such as [linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle) and linewidth. You can use LaTeX in titles and labels.
+Most drawing functions can take standard matplotlib keyword arguments such as
+[linestyle](http://matplotlib.org/api/lines_api.html#matplotlib.lines.Line2D.set_linestyle)
+and linewidth. You can use LaTeX in titles and labels.
 
 If you need to act directly on the underyling matplotlib axes, you can access them:
 
@@ -75,11 +77,12 @@ figure, tax = ternary.figure(ax=ax)
 ...
 ````
 
+`TernaryAxesSubplot` objects keep track of the scale, axes, and other parameters,
+supplying them as needed to other functions.
+
 ## Simplex Boundary and Gridlines
 
 The following code draws a boundary for the simplex and gridlines.
-
-![Ternary Plot -- Boundary and Gridlines](/../images/readme_images/boundary_and_gridlines.png)
 
 ```
 from matplotlib import pyplot
@@ -91,7 +94,7 @@ figure, tax = ternary.figure(scale=scale)
 
 # Draw Boundary and Gridlines
 tax.boundary(color="black", linewidth=2.0)
-tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be fractional
+tax.gridlines(color="blue", multiple=5) # Every 5th gridline, can be a float
 
 # Set Axis labels and Title
 fontsize = 20
@@ -105,6 +108,8 @@ tax.clear_matplotlib_ticks()
 
 pyplot.show()
 ```
+
+![Ternary Plot -- Boundary and Gridlines](/readme_images/boundary_and_gridlines.png)
 
 ## Drawing lines
 
@@ -131,9 +136,9 @@ tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$", fontsize=fontsize)
 tax.horizontal_line(16)
 tax.left_parallel_line(10, linewidth=2., color='red', linestyle="--")
 tax.right_parallel_line(20, linewidth=3., color='blue')
-# Draw an arbitrary line
-p1 = ternary.project_point((12,8,10))
-p2 = ternary.project_point((2, 26, 2))
+# Draw an arbitrary line, ternary will project the points for you
+p1 = (12,8,10)
+p2 = (2, 26, 2)
 tax.line(p1, p2, linewidth=3., marker='s', color='green', linestyle=":")
 
 tax.show()
@@ -141,7 +146,7 @@ tax.show()
 
 The line drawing functions accept the matplotlib keyword arguments of [Line2D](http://matplotlib.org/api/lines_api.html).
 
-![Ternary Plot -- Various Lines](/../images/readme_images/various_lines.png)
+![Ternary Plot -- Various Lines](/readme_images/various_lines.png)
 
 ## Curves
 
@@ -151,7 +156,7 @@ Curves can be plotted by specifying the points of the curve, just like matplotli
 ternary.plot(points)
 ```
 
-Points is a list of tuples or numpy arrays, e.g. [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)], e.g. as in the [sample data](/curve.txt).
+Points is a list of tuples or numpy arrays, such as [(0.5, 0.25, 0.25), (1./3, 1./3, 1./3)],
 
 ```
 import ternary
@@ -163,7 +168,7 @@ tax.gridlines(multiple=0.2, color="black")
 tax.set_title("Plotting of sample trajectory data", fontsize=20)
 points = []
 # Load some data, tuples (x,y,z)
-with open("curve.txt") as handle:
+with open("sample_data/curve.txt") as handle:
     for line in handle:
         points.append(map(float, line.split(' ')))
 # Plot the data
@@ -172,7 +177,7 @@ tax.legend()
 tax.show()
 ```
 
-![Ternary Curve Plot](/../images/readme_images/trajectory.png)
+![Ternary Curve Plot](/readme_images/trajectory.png)
 
 There are many more examples in [this paper](http://arxiv.org/abs/1210.5539).
 
@@ -181,7 +186,7 @@ You can also color the curves with a Matplotlib heatmap using:
 plot_colored_trajectory(points, cmap="hsv", linewidth=2.0)
 ```
 
-![Ternary Curve Plot](/../images/readme_images/colored_trajectory.png)
+![Ternary Curve Plot](/readme_images/colored_trajectory.png)
 
 ## Scatter Plots
 
@@ -207,11 +212,32 @@ tax.show()
 
 ```
 
-![Ternary Scatter Plot Example](/../images/readme_images/scatter.png)
+![Ternary Scatter Plot Example](/readme_images/scatter.png)
 
 ## Heatmaps
 
-Ternary can plot heatmaps in two ways and two styles. Given a function, ternary will evaluate the function at the specified number of steps (determined by the scale, expected to be an integer in this case). The simplex can be split up into triangles or hexagons (thanks to [btweinstein](https://github.com/btweinstein) for the hexagonal heatmap functionality). There is a large set of examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
+Ternary can plot heatmaps in two ways and two styles. Given a function, ternary
+will evaluate the function at the specified number of steps (determined by the 
+scale, expected to be an integer in this case). The simplex can be split up into
+triangles or hexagons and colored according to one of three styles:
+
+- Triangular -- `triangular`: coloring triangles by summing the values on the
+vertices
+- Dual-triangular  -- `dual-triangular`: mapping (i,j,k) to the upright 
+triangles &#9651; and blending the neigboring triangles for the downward 
+triangles &#9661;
+- Hexagonal  -- `hexagonal`: which does not blend values at all, and divides
+the simplex up into heaxagonal regions
+
+The two triangular heatmap styles and the hexagonal heatmap style can be visualized as follows. The `dual-triangular` style plots the true values on the upright triangles, mapping ternary coordinates to upright triangles otherwise. The `triangular` style
+maps ternary coordinates to vertices and computes the triangle color based on the
+values at the vertices.
+
+<img src ="/readme_images/heatmap-grids.png" width="500" height="250"/>
+
+![](/readme_images/heatmap_styles_cubehelix.png)
+
+Thanks to [chebee7i](https://github.com/chebee7i) for the above images.
 
 Let's define a function on the simplex for illustration, the [Shannon entropy](http://en.wikipedia.org/wiki/Entropy_%28information_theory%29) of a probability distribution:
 
@@ -234,8 +260,6 @@ import ternary
 scale = 60
 
 figure, tax = ternary.figure(scale=scale)
-tax.set_title("Scatter Plot", fontsize=20)
-
 tax.heatmapf(shannon_entropy, boundary=True, style="triangular")
 tax.boundary(linewidth=2.0)
 tax.set_title("Shannon Entropy Heatmap")
@@ -243,29 +267,35 @@ tax.set_title("Shannon Entropy Heatmap")
 tax.show()
 ```
 
-In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM (the number of polygons rendered is O(n^2) ).
+In this case the keyword argument *boundary* indicates whether you wish to evaluate points on the boundary of the partition (which is sometimes undesirable). Specify `style="hexagonal"` for hexagons. Large scalings can use a lot of RAM since the number of polygons rendered is O(n^2).
 
 You may specify a [matplotlib colormap](http://matplotlib.org/examples/color/colormaps_reference.html) (an instance or the colormap name) in the cmap argument.
 
-![Ternary Heatmap Examples](/../images/readme_images/heatmap_shannon.png)
+![Ternary Heatmap Examples](/readme_images/heatmap_shannon.png)
 
-Ternary can also make heatmaps from data. In this case you need to supply a dictionary mapping `(i,j) for i + j + k = scale` to a float as input for a heatmap, using the function
+Ternary can also make heatmaps from data. In this case you need to supply a dictionary 
+mapping `(i, j)` or `(i, j, k)` for `i + j + k = scale` to a float as input for a heatmap. It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when `scale` is in the hundreds). 
 
-```
-ternary.heatmap(d, scale, ax=None, cmap=None)
-```
-
-or 
+Make the heatmap as follows:
 
 ```
-tax.heatmap(d, cmap=None)
+ternary.heatmap(data, scale, ax=None, cmap=None)
+```
+
+or on a `TernaryAxesSubplot` object
+
+```
+tax.heatmap(data, cmap=None)
 ```
 
 This can produces images such as:
 
-![Ternary Heatmap Examples](/../images/readme_images/heatmap_rsp.png)
 
-It is not necessary to include `k` in the dictionary keys since it can be determined from `scale`, `i`, and `j`. This reduces the memory requirements when the partition is very fine (significant when scale >= 500).
+![Ternary Heatmap Examples](/readme_images/heatmap-dual_vs_triangular.png)
+
+![Ternary Heatmap Examples](/readme_images/heatmap_rsp.png)
+
+There is a large set of heatmap examples [here](http://people.mbi.ucla.edu/marcharper/stationary_stable/3x3/incentive.html).
 
 # Unittests
 
