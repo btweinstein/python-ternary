@@ -64,7 +64,7 @@ def colormapper(value, lower=0, upper=1, cmap=None):
     hex_ = rgb2hex(rgba)
     return hex_
 
-def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, text_format='%.4f', numticks=7, title=None):
+def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, text_format='%.4f', numticks=7, title=None, cax=False):
     """Colorbar hack to insert colorbar on ternary plot. Called by heatmap, 
     not intended for direct usage."""
     # http://stackoverflow.com/questions/8342549/matplotlib-add-colorbar-to-a-sequence-of-line-plots
@@ -72,7 +72,10 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, text_format='%.4f', nu
     sm = pyplot.cm.ScalarMappable(cmap=cmap, norm=norm)
     # Fake up the array of the scalar mappable. Urgh...
     sm._A = []
-    cb = pyplot.colorbar(sm, ax=ax, format=text_format)
+    if not cax:
+        cb = pyplot.colorbar(sm, ax=ax, format=text_format)
+    else:
+        cb = pyplot.colorbar(sm, cax=ax, format=text_format)
     cb.locator = matplotlib.ticker.LinearLocator(numticks=numticks)
     if scientific:
         cb.formatter = matplotlib.ticker.ScalarFormatter()
@@ -82,3 +85,4 @@ def colorbar_hack(ax, vmin, vmax, cmap, scientific=False, text_format='%.4f', nu
         colorbar_ax = cb.ax
         colorbar_ax.text(3.25,0.55,title,rotation=270, fontsize=22)
         #cb.set_label(title, labelpad=title_padding)
+    return cb
